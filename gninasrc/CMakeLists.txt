@@ -248,6 +248,7 @@ add_executable(gnina main/main.cpp $<TARGET_OBJECTS:gninalibobj> )
 target_link_libraries(gnina  ${Boost_LIBRARIES} ${OpenBabel3_LIBRARIES} ${LIBMOLGRID_LIBRARY} ${TORCH_LIBRARIES} jsoncpp_lib ZLIB::ZLIB gninalibobj)
 
 add_subdirectory(gninaserver)
+add_subdirectory(pygnina)
 
 add_executable(fromgnina fromgnina/fromgnina.cpp lib/CommandLine2/CommandLine.cpp)
 target_link_libraries(fromgnina  gninalib )

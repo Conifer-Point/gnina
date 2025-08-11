@@ -25,3 +25,4 @@ endif()
 
 add_subdirectory(gninagrid)
 add_subdirectory(gnina)
+add_subdirectory(pygnina)

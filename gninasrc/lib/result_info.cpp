@@ -83,7 +83,7 @@ static void setMolData(OpenBabel::OBFormat *format, OpenBabel::OBMol& mol,
 }
 
 //output flexible residue conformers
-void result_info::writeFlex(std::ostream& out, std::string& ext, int modelnum) {
+void result_info::writeFlex(std::ostream& out, const std::string& ext, int modelnum) {
   using namespace OpenBabel;
   OBMol mol;
   OBConversion outconv;
@@ -108,7 +108,7 @@ void result_info::writeFlex(std::ostream& out, std::string& ext, int modelnum) {
 
 //output molecular data
 //ideally, we will deal natively in sdf and only use openbabel to convert for alternative formats
-void result_info::write(std::ostream& out, std::string& ext,
+void result_info::write(std::ostream& out, const std::string& ext,
     bool include_atom_terms, const weighted_terms *wt, int modelnum) {
   using namespace OpenBabel;
   OBMol mol;

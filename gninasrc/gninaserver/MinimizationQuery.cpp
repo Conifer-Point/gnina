@@ -25,12 +25,7 @@ MinimizationParameters::MinimizationParameters()
   minparms.type = minimization_params::BFGSAccurateLineSearch;
 
   //vina scoring function
-  t.add("gauss(o=0,_w=0.5,_c=8)", -0.035579);
-  t.add("gauss(o=3,_w=2,_c=8)", -0.005156);
-  t.add("repulsion(o=0,_c=8)", 0.840245);
-  t.add("hydrophobic(g=0.5,_b=1.5,_c=8)", -0.035069);
-  t.add("non_dir_h_bond(g=-0.7,_b=0,_c=8)", -0.587439);
-  t.add("num_tors_div", 5 * 0.05846 / 0.1 - 1);
+  t.add_vina();
 
   wt = new weighted_terms(&t, t.weights());
   prec = new precalculate_splines(*wt, 10.0);

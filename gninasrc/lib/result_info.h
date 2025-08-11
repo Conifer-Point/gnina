@@ -44,10 +44,14 @@ class result_info {
     //computes per-atom term values and formats them into the atominfo string
     void setAtomValues(const model& m, const weighted_terms *wt);
 
-    void write(std::ostream& out, std::string& ext, bool include_atom_terms,
-        const weighted_terms *wt = NULL, int modelnum = 0);
+    void write(std::ostream& out, const std::string& ext, bool include_atom_terms,
+        const weighted_terms *wt = NULL, int modelnum = 0) ;
 
-    void writeFlex(std::ostream& out, std::string& ext, int modelnum = 0);
+    void writeFlex(std::ostream& out, const std::string& ext, int modelnum = 0);
+
+    fl getEnergy() const { return energy;}
+    fl getCNNScore() const { return cnnscore; }
+    fl getCNNAffinity() const { return cnnaffinity;}
 };
 
 #endif /* RESULT_INFO_H_ */

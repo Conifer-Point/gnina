@@ -123,7 +123,8 @@ void MolGetter::create_init_model(const std::string &rigid_name, const std::stri
         covatom = cinfo.find_rec_atom(covres);
 
         if (!covatom) {
-          throw usage_error("Lost receptor atom " + cinfo.rec_atom_string() + " when constructing flexible residue (this should not happen).");
+          throw usage_error("Lost receptor atom " + cinfo.rec_atom_string() +
+                            " when constructing flexible residue (this should not happen).");
         }
         VINA_CHECK(covatom);
         if (covatom->GetHvyDegree() == 0) {
@@ -297,7 +298,7 @@ bool MolGetter::createCovalentMoleculeInModel(model &m) {
   if (cinfo.keep_ligand_position()) {
     // create a bond in-place (when minimizing/scoring)
     flex.AddBond(ratom_index, latom_index, cinfo.get_bond_order());
-    matchpos = match_list.size(); //single orientation
+    matchpos = match_list.size(); // single orientation
     success = true;
   } else if (cinfo.has_user_lig_atom_pos()) {
     vec pos = cinfo.lig_atom_pos(covatom, latom);
@@ -457,10 +458,10 @@ bool MolGetter::readMoleculeIntoModel(model &m) {
         mol.StripSalts();
         m.set_name(name);
 
-	if(mol.NumAtoms() == 0) {
+        if (mol.NumAtoms() == 0) {
           std::cerr << "\nEmpty molecule " << mol.GetTitle() << ". No output will be generated for the molecule.\n";
-          continue; 
-	}
+          continue;
+        }
         try {
           parsing_struct p;
           context c;

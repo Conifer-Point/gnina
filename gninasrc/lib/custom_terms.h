@@ -35,6 +35,16 @@ struct custom_terms : public terms {
     void print_available_terms(std::ostream& out) const;
     friend std::ostream& operator<<(std::ostream& out, const custom_terms& t);
     void set_scaling_factor(fl sf);
+
+    //add the standard Vina scoring terms
+    void add_vina() {
+      add("gauss(o=0,_w=0.5,_c=8)", -0.035579);
+      add("gauss(o=3,_w=2,_c=8)", -0.005156);
+      add("repulsion(o=0,_c=8)", 0.840245);
+      add("hydrophobic(g=0.5,_b=1.5,_c=8)", -0.035069);
+      add("non_dir_h_bond(g=-0.7,_b=0,_c=8)", -0.587439);
+      add("num_tors_div", 5 * 0.05846 / 0.1 - 1);
+    }
 };
 
 #endif
