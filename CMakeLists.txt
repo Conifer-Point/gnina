@@ -35,7 +35,7 @@ if (BUILD_COVERAGE)
 endif()
 
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
-find_package(CUDA 12.0 REQUIRED)
+find_package(CUDA 13.0 REQUIRED)
 set(BUILD_CAFFE2 OFF)
 set(CAFFE2_USE_CUDNN 1)
 
@@ -82,7 +82,7 @@ if (NOT Torch_FOUND)
   #https://discuss.pytorch.org/t/using-fetchcontent-declare-in-cmake-to-pull-libtorch/177449
   FetchContent_Declare(
           libtorch
-          URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip"
+          URL "https://download.pytorch.org/libtorch/cu130/libtorch-shared-with-deps-2.9.0%2Bcu130.zip"
   )
 
   FetchContent_MakeAvailable(libtorch)
@@ -143,7 +143,8 @@ if(NOT LIBMOLGRID_LIBRARY)
  find_package(Git REQUIRED)
  set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
  ExternalProject_Add(libmolgrid
-    GIT_REPOSITORY https://github.com/gnina/libmolgrid
+    GIT_REPOSITORY https://github.com/Conifer-Point/libmolgrid
+    GIT_TAG donbyron02-patch-1
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
   )
   set(LIBMOLGRID_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/include)
