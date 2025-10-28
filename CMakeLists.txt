@@ -96,6 +96,7 @@ if (NOT Torch_FOUND)
   libcudart-6876f484.so.13 
   libcublas-ea443b3d.so.13 
   libcublasLt-c92c4c24.so.13 
+  libcupti-729d5727.so.13 
   libtorch_cpu.so
   libtorch_cuda.so
   libc10_cuda.so
