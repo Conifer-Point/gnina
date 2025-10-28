@@ -143,7 +143,6 @@ if(NOT LIBMOLGRID_LIBRARY)
  set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
  ExternalProject_Add(libmolgrid
     GIT_REPOSITORY https://github.com/Conifer-Point/libmolgrid
-    GIT_TAG donbyron02-patch-1
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
   )
   set(LIBMOLGRID_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/include)
