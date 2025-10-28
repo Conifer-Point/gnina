@@ -94,7 +94,6 @@ if (NOT Torch_FOUND)
   set(TORCH_NEEDED
   libgomp-98b21ff3.so.1 
   libcudart-6876f484.so.13 
-  libnvToolsExt-847d78f2.so.1 
   libcublas-ea443b3d.so.13 
   libcublasLt-c92c4c24.so.13 
   libtorch_cpu.so
@@ -112,7 +111,7 @@ if (NOT Torch_FOUND)
   libcudnn.so.9  
   libjitbackend_test.so
   libnnapi_backend.so
-  libnvrtc-b51b459d.so.12
+  libnvrtc-fd8dab02.so.13
   libnvrtc-builtins.so
   libshm.so
   libtorchbind_test.so
