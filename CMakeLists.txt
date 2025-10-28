@@ -93,10 +93,10 @@ if (NOT Torch_FOUND)
   cmake_path(GET TORCH_LIBRARY PARENT_PATH TORCH_LIBDIR)
   set(TORCH_NEEDED
   libgomp-98b21ff3.so.1 
-  libcudart-9335f6a2.so.12 
+  libcudart-6876f484.so.13 
   libnvToolsExt-847d78f2.so.1 
-  libcublas-37d11411.so.12 
-  libcublasLt-f97bfc2c.so.12 
+  libcublas-ea443b3d.so.13 
+  libcublasLt-c92c4c24.so.13 
   libtorch_cpu.so
   libtorch_cuda.so
   libc10_cuda.so
