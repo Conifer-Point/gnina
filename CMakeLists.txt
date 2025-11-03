@@ -67,6 +67,24 @@ find_package(Protobuf REQUIRED)
 #In order to build a mostly static executable, see docker/compat/Dockerfile
 # cmake .. -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-12.0 -DCMAKE_CUDA_ARCHITECTURES="60;61;70;75;80;90" -DUSE_STATIC_MKL=ON -DUSE_MKLDNN=ON -DBLAS=OpenBLAS -DBUILD_SHARED_LIBS=OFF -DBUILD_PYTHON=OFF -DCAFFE2_STATIC_LINK_CUDA=ON -DUSE_TENSORPIPE=OFF -DUSE_STATIC_NCCL=ON -DUSE_STATIC_CUDNN=ON -DTORCH_CUDA_ARCH_LIST="6.0 6.1 7.0 7.5 8.0 9.0"
 
+# Set default architectures depending on CUDA version
+if (CUDA_VERSION_MAJOR LESS 11)
+    # CUDA 10.x or earlier (up to sm_75)
+    set(TORCH_CUDA_ARCH_LIST "3.7;5.0;6.0;6.1;7.0;7.5" CACHE STRING "Supported GPU architectures for CUDA < 11")
+elseif (CUDA_VERSION_MAJOR EQUAL 11)
+    # CUDA 11.x (supports up to Ada Lovelace sm_89)
+    set(TORCH_CUDA_ARCH_LIST "5.0;6.0;6.1;7.0;7.5;8.0;8.6;8.9" CACHE STRING "Supported GPU architectures for CUDA 11")
+elseif (CUDA_VERSION_MAJOR EQUAL 12)
+    # CUDA 12.x (adds Hopper sm_90, drops older < sm_50)
+    set(TORCH_CUDA_ARCH_LIST "6.0;7.0;7.5;8.0;8.6;8.9;9.0" CACHE STRING "Supported GPU architectures for CUDA 12")
+elseif (CUDA_VERSION_MAJOR GREATER_EQUAL 13)
+    # Future-proof default (assume Hopper+)
+    set(TORCH_CUDA_ARCH_LIST "7.5;8.0;8.6;8.9;9.0;9.0+PTX" CACHE STRING "Supported GPU architectures for CUDA ≥13")
+else()
+    message(WARNING "Unrecognized CUDA version: ${CUDAToolkit_VERSION}, using a generic arch list")
+    set(TORCH_CUDA_ARCH_LIST "7.5;8.0;8.6")
+endif()
+
 if(GNINA_FORCE_EXTERNAL_LIBS)
   find_package(Torch 2 REQUIRED)
 else()
