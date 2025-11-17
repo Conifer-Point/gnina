@@ -35,7 +35,7 @@ if (BUILD_COVERAGE)
 endif()
 
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
-find_package(CUDA 12.0 REQUIRED)
+find_package(CUDA 13.0 REQUIRED)
 set(BUILD_CAFFE2 OFF)
 set(CAFFE2_USE_CUDNN 1)
 
@@ -100,7 +100,7 @@ if (NOT Torch_FOUND)
   #https://discuss.pytorch.org/t/using-fetchcontent-declare-in-cmake-to-pull-libtorch/177449
   FetchContent_Declare(
           libtorch
-          URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip"
+          URL "https://download.pytorch.org/libtorch/cu130/libtorch-shared-with-deps-2.9.0%2Bcu130.zip"
   )
 
   FetchContent_MakeAvailable(libtorch)
@@ -111,10 +111,10 @@ if (NOT Torch_FOUND)
   cmake_path(GET TORCH_LIBRARY PARENT_PATH TORCH_LIBDIR)
   set(TORCH_NEEDED
   libgomp-98b21ff3.so.1 
-  libcudart-9335f6a2.so.12 
-  libnvToolsExt-847d78f2.so.1 
-  libcublas-37d11411.so.12 
-  libcublasLt-f97bfc2c.so.12 
+  libcudart-6876f484.so.13 
+  libcublas-ea443b3d.so.13 
+  libcublasLt-c92c4c24.so.13 
+  libcupti-729d5727.so.13 
   libtorch_cpu.so
   libtorch_cuda.so
   libc10_cuda.so
@@ -130,7 +130,7 @@ if (NOT Torch_FOUND)
   libcudnn.so.9  
   libjitbackend_test.so
   libnnapi_backend.so
-  libnvrtc-b51b459d.so.12
+  libnvrtc-fd8dab02.so.13
   libnvrtc-builtins.so
   libshm.so
   libtorchbind_test.so
