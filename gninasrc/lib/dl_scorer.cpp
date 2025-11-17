@@ -18,7 +18,13 @@ int initializeCUDA(int device) {
     return error;
   }
 
-  error = cudaGetDeviceProperties(&deviceProp, device);
+  int mode = 0;
+  error = cudaDeviceGetAttribute(&mode, cudaDevAttrComputeMode, device);
+
+  if (mode == cudaComputeModeProhibited) {
+    std::cerr << "Error: device is running in <Compute Mode Prohibited>, no threads can use ::cudaSetDevice().\n";
+    return -1;
+  }
 
   if (error != cudaSuccess) {
     return error;
