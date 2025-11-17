@@ -1,0 +1,76 @@
+ARG BUILDER_BASE=nvidia/cuda:13.0.0-devel-ubuntu24.04
+ARG RUNTIME_BASE=nvidia/cuda:13.0.0-runtime-ubuntu24.04
+
+# Conifer-Point/gnina#cuda13 has adjustments for cuda13,
+# and references a similar clone of libmolgrid for cuda13
+ARG GNINA_URL=https://github.com/Conifer-Point/gnina.git
+ARG GNINA_BRANCH=cuda13
+ARG USERNAME=gnina
+ARG USER_UID=4000
+ARG USER_GID=4000
+
+# STAGE 1 - Build
+FROM ${BUILDER_BASE} AS builder
+ARG GNINA_URL
+ARG GNINA_BRANCH
+
+# To minimize layer size, this does everything in a single RUN:
+# * install apt packages
+# * pip install (to system, since we're in a container)
+# * special apt install of cmake, an older version needed by OpenBabel (v3.28, intalled to /usr/bin)
+# * clone, build, and install openbabel
+# * clone, build, and install gnina
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential git-all wget curl \
+            libboost-all-dev \
+            libeigen3-dev \
+            libgoogle-glog-dev libprotobuf-dev protobuf-compiler \
+            libhdf5-dev \
+            libatlas-base-dev \
+            librdkit-dev \
+            libjsoncpp-dev \
+            python3-dev \
+            python3-numpy \
+            python3-pip \
+            python3-pytest \
+            swig \
+    && \
+    pip3 install --break-system-packages cmake scikit-image pyquaternion google-api-python-client six && \
+    pip3 install --break-system-packages torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130 && \
+    \
+    DEBIAN_FRONTEND=noninteractive apt install -y cmake && \
+    git clone https://github.com/openbabel/openbabel.git && \
+    cd openbabel && mkdir build && cd build && \
+    /usr/bin/cmake -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF -DPYTHON_BINDINGS=ON -DRUN_SWIG=ON .. && \
+    make -j4 && make install && \
+    cd ../.. && \
+    \
+    git clone --branch ${GNINA_BRANCH} ${GNINA_URL} && \
+    cd gnina && mkdir build && cd build && \
+    cmake .. -DCMAKE_CUDA_ARCHITECTURES=120 -DTORCH_CUDA_ARCH_LIST="12.0" && \
+    make -j4 && make install
+
+# Prepare to copy to runtime
+RUN tar czf /tmp/bundle.tgz \
+    /usr/local/bin/gnina \
+    /usr/local/lib/gnina \
+    /usr/local/lib/libgnina* \
+    /usr/local/lib/libopenbabel* \
+    /usr/local/lib/libinchi* \
+    /usr/local/lib/openbabel \
+    /usr/lib/x86_64-linux-gnu/
+
+# STAGE 2 - Assemble runtime
+FROM ${RUNTIME_BASE}
+ARG USERNAME
+ARG USER_UID
+ARG USER_GID
+
+RUN groupadd --gid ${USER_GID} ${USERNAME} && \
+    useradd --uid ${USER_UID} --gid ${USER_GID} --create-home --shell /bin/bash ${USERNAME}
+
+COPY --from=builder /tmp/bundle.tgz /tmp/
+RUN tar xzf /tmp/bundle.tgz -C / && rm /tmp/bundle.tgz
+
+USER ${USERNAME}
